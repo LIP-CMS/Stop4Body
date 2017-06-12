@@ -96,6 +96,9 @@ int main(int argc, char** argv)
   bool swap = false;
   bool looseNotTight = false;
   bool preemptiveDropEvents = false;
+  bool doLooseLeptons = false;
+  bool doPromptTagging = false;
+  int part = -1;
 
   if(argc < 2)
   {
@@ -152,6 +155,19 @@ int main(int argc, char** argv)
 
     if(argument == "--preemptiveDropEvents")
       preemptiveDropEvents = true;
+
+    if(argument == "--doLooseLeptons")
+      doLooseLeptons = true;
+
+    if(argument == "--doPromptTagging")
+      doPromptTagging = true;
+
+    if(argument == "--part")
+    {
+      std::stringstream converter;
+      converter << argv[++i];
+      converter >> part;
+    }
   }
 
   if(jsonFileName == "")
@@ -201,6 +217,13 @@ int main(int argc, char** argv)
       std::string outputFile = outputDirectory + "/" + sample.tag();
       if(suffix != "")
         outputFile += "_" + suffix;
+      if(part >= 0)
+      {
+        outputFile += "_Part";
+        std::stringstream converter;
+        converter << part;
+        outputFile += converter.str();
+      }
       outputFile += ".root";
       std::cout << "\t  Putting output in: " << outputFile << std::endl;
 
@@ -218,9 +241,9 @@ int main(int argc, char** argv)
       TTree *bdttree= new TTree("bdttree","bdttree");
 
       // New branch in bdt tree
-      Float_t Run;  bdttree->Branch("Run",&Run,"Run/F");
-      Float_t Event;  bdttree->Branch("Event",&Event,"Event/F");
-      Float_t LumiSec;  bdttree->Branch("LumiSec",&LumiSec,"LumiSec/F");
+      UInt_t Run;  bdttree->Branch("Run",&Run);
+      ULong64_t Event;  bdttree->Branch("Event",&Event);
+      UInt_t LumiSec;  bdttree->Branch("LumiSec",&LumiSec);
       Float_t Nevt;  bdttree->Branch("Nevt",&Nevt,"Nevt/F");
       Float_t XS; bdttree->Branch("XS",&XS,"XS/F");
       Float_t nVert; bdttree->Branch("nVert", &nVert, "nVert/F");
@@ -244,6 +267,8 @@ int main(int argc, char** argv)
       bool isLooseNotTight=false; bdttree->Branch("isLooseNotTight", &isLooseNotTight);
       Float_t looseNotTightWeight=1; bdttree->Branch("looseNotTightWeight", &looseNotTightWeight, "looseNotTightWeight/F");
 
+      bool isTight;      bdttree->Branch("isTight",   &isTight);
+      bool isLoose;      bdttree->Branch("isLoose",   &isLoose);
       Float_t LepID;     bdttree->Branch("LepID",     &LepID,     "LepID/F");
       Float_t LepChg;    bdttree->Branch("LepChg",    &LepChg,    "LepChg/F");
       Float_t LepPt;     bdttree->Branch("LepPt",     &LepPt,     "LepPt/F");
@@ -251,6 +276,7 @@ int main(int argc, char** argv)
       Float_t LepDxy;    bdttree->Branch("LepDxy",    &LepDxy,    "LepDxy/F");
       Float_t LepDz;     bdttree->Branch("LepDz",     &LepDz,     "LepDz/F");
       Float_t LepIso03;  bdttree->Branch("LepIso03",  &LepIso03,  "LepIso03/F");
+      Float_t LepHybIso03; bdttree->Branch("LepHybIso03",  &LepHybIso03,  "LepHybIso03/F");
       Float_t isPrompt;  bdttree->Branch("isPrompt",  &isPrompt,  "isPrompt/F");
       Float_t Lep2ID;    bdttree->Branch("Lep2ID",    &Lep2ID,    "Lep2ID/F");
       Float_t Lep2Chg;   bdttree->Branch("Lep2Chg",   &Lep2Chg,   "Lep2Chg/F");
@@ -259,7 +285,6 @@ int main(int argc, char** argv)
       Float_t Lep2Dxy;   bdttree->Branch("Lep2Dxy",   &Lep2Dxy,   "Lep2Dxy/F");
       Float_t Lep2Dz;    bdttree->Branch("Lep2Dz",    &Lep2Dz,    "Lep2Dz/F");
       Float_t Lep2Iso03; bdttree->Branch("Lep2Iso03", &Lep2Iso03, "Lep2Iso03/F");
-      Float_t isPrompt2; bdttree->Branch("isPrompt2",  &isPrompt2,  "isPrompt2/F");
       Float_t nGoodMu;   bdttree->Branch("nGoodMu",&nGoodMu,"nGoodMu/F");
       Float_t nGoodEl;   bdttree->Branch("nGoodEl",&nGoodEl,"nGoodEl/F");
       Float_t nGoodMu_loose;
@@ -609,46 +634,47 @@ int main(int argc, char** argv)
                 nGoodEl_loose++;
             }
           }
-          std::sort(validLeptons.begin(), validLeptons.end(), [LepGood_pt] (const int &left, const int &right) {
+          std::sort(validLeptons.begin(), validLeptons.end(), [&LepGood_pt] (const int &left, const int &right) {
             return LepGood_pt[left] > LepGood_pt[right];
             });
-          std::sort(looseLeptons.begin(), looseLeptons.end(), [LepGood_pt] (const int &left, const int &right) {
+          std::sort(looseLeptons.begin(), looseLeptons.end(), [&LepGood_pt] (const int &left, const int &right) {
             return LepGood_pt[left] > LepGood_pt[right];
             });
 
-          isLooseNotTight = false;
-          if(looseNotTight)
+          auto lepSel = [&LepGood_pt] (std::vector<int> &leptons) -> bool
           {
-            if(looseLeptons.size() > 0 && looseLeptons.size() < 3)
+            if(leptons.size() > 0)
             {
-              isLooseNotTight = true;
-
-              if(looseLeptons.size() == 2)
-                if(LepGood_pt[looseLeptons[1]] > SECOND_LEPTON_PT)
-                  isLooseNotTight = false;
-
-              if(validLeptons.size() > 0)
-                isLooseNotTight = false;
+              if(leptons.size() > 1)
+              {
+                if(LepGood_pt[leptons[1]] > SECOND_LEPTON_PT)
+                  return false;
+              }
+              return true;
             }
+            return false;
+          };
 
-            if(isLooseNotTight)
-            {
-              validLeptons = looseLeptons;
-              nGoodMu = nGoodMu_loose;
-              nGoodEl = nGoodEl_loose;
-            }
-            else
-            {
-              if(preemptiveDropEvents)
-                continue;
-            }
+          isTight = lepSel(validLeptons);
+
+          isLoose = lepSel(looseLeptons);
+
+          isLooseNotTight = isLoose && !isTight;
+          if(isLooseNotTight)
+          {
+            validLeptons = looseLeptons;
+            nGoodMu = nGoodMu_loose;
+            nGoodEl = nGoodEl_loose;
           }
 
-          // TODO: Skim leptons
-          if(preemptiveDropEvents && (validLeptons.size() == 0 || validLeptons.size() > 2))
+          if(preemptiveDropEvents && looseNotTight && !isLooseNotTight)
             continue;
-          if(preemptiveDropEvents && validLeptons.size() == 2)
-            if(LepGood_pt[validLeptons[1]] > SECOND_LEPTON_PT) continue;
+
+          if(preemptiveDropEvents && !doLooseLeptons && isLooseNotTight)
+            continue;
+
+          if(preemptiveDropEvents && !(isLoose || isTight))
+            continue;
 
           // Setting the values to be saved in the output tree
           mt_old = mtw;
@@ -734,18 +760,23 @@ int main(int argc, char** argv)
             LepDxy      = LepGood_dxy[leptonIndex];
             LepDz       = LepGood_dz[leptonIndex];
             LepIso03    = LepGood_relIso03[leptonIndex];
+            Float_t minPt = 25.;
+            LepHybIso03 = LepIso03*std::min(LepPt, minPt);
             VLep.SetPtEtaPhiM(LepPt, LepEta, lep_phi, LepGood_mass[leptonIndex]);
 
             if(!process.isdata())
             {
               leptonIDSF = static_cast<double>(getLeptonIDSF(LepID, LepPt, LepEta));
               leptonISOSF = static_cast<double>(getLeptonISOSF(LepID, LepPt, LepEta));
+            }
 
+            if(!process.isdata() && doPromptTagging)
+            {
               auto mcMatchId = LepGood_mcMatchId[leptonIndex];
               bool isPromptFlag = !(mcMatchId == 0 || mcMatchId == 99 || mcMatchId == 100);
               if(!isPromptFlag)
               {
-                for(int genPartIndex = 0; genPartIndex < nGenPart; ++nGenPart)
+                for(int genPartIndex = 0; genPartIndex < nGenPart; ++genPartIndex)
                 {
                   if(std::abs(GenPart_pdgId[genPartIndex]) == 15)
                   {
@@ -784,6 +815,7 @@ int main(int argc, char** argv)
             LepDxy      = -9999;
             LepDz       = -9999;
             LepIso03    = -9999;
+            LepHybIso03 = -9999;
             isPrompt    = -9999;
           }
           if(validLeptons.size() > 1)
@@ -796,40 +828,6 @@ int main(int argc, char** argv)
             Lep2Dxy      = LepGood_dxy[leptonIndex];
             Lep2Dz       = LepGood_dz[leptonIndex];
             Lep2Iso03    = LepGood_relIso03[leptonIndex];
-
-            if(!process.isdata())
-            {
-              auto mcMatchId = LepGood_mcMatchId[leptonIndex];
-              bool isPromptFlag = !(mcMatchId == 0 || mcMatchId == 99 || mcMatchId == 100);
-              auto Lep2Phi = LepGood_phi[leptonIndex];
-              if(!isPromptFlag)
-              {
-                for(int genPartIndex = 0; genPartIndex < nGenPart; ++nGenPart)
-                {
-                  if(std::abs(GenPart_pdgId[genPartIndex]) == 15)
-                  {
-                    if(std::abs(GenPart_motherId[genPartIndex]) == 24 || std::abs(GenPart_motherId[genPartIndex]) == 23 || (GenPart_motherId[genPartIndex] == -9999 && genPartIndex < 3 ))
-                    {
-                      double dphi = DeltaPhi(GenPart_phi[genPartIndex], Lep2Phi);
-                      double deta = GenPart_eta[genPartIndex] - Lep2Eta;
-                      double dr = std::sqrt(std::pow(dphi,2) + std::pow(deta,2));
-
-                      if(dr < 0.15)
-                      {
-                        isPromptFlag = true;
-                        break;
-                      }
-                    }
-                  }
-                }
-              }
-
-              isPrompt2   = isPromptFlag?1:0;
-            }
-            else
-            {
-              isPrompt2 = 1;
-            }
           }
           else
           {
@@ -840,7 +838,6 @@ int main(int argc, char** argv)
             Lep2Dxy      = -9999;
             Lep2Dz       = -9999;
             Lep2Iso03    = -9999;
-            isPrompt2    = -9999;
           }
 
           if(!process.isdata())
@@ -1163,14 +1160,7 @@ int main(int argc, char** argv)
           bool htRequirement = HT > 200;
           bool jetRequirement = Jet1Pt > ISR_JET_PT;
           bool antiQCDRequirement = DPhiJet1Jet2 < 2.5 || Jet2Pt < 60;
-          bool leptonRequirement = false;
-          if(validLeptons.size() == 1)
-            leptonRequirement = true;
-          if(validLeptons.size() == 2)
-          {
-            if(LepGood_pt[validLeptons[1]] < SECOND_LEPTON_PT)
-              leptonRequirement = true;
-          }
+          bool leptonRequirement = isTight;
           bool deltaMRequirement = LepPt < 30;
 
           // Fill counters for parallel selection computation
@@ -1210,12 +1200,18 @@ int main(int argc, char** argv)
             if(swap && LepPt < 5)
               continue;
 
-            // No need to keep events without leptons or jets
-            if(validLeptons.size() == 0 || validJets.size() == 0)
+            // Only keep events whose leptons pass our requirements
+            if(looseNotTight && !isLooseNotTight)
               continue;
 
-            // If the pT of the second lepton is above 20, we do not want to keep it TODO: Reevaluate if we want these events skimmed or not
-            if(validLeptons.size() > 1 && Lep2Pt > SECOND_LEPTON_PT)
+            if(!doLooseLeptons && isLooseNotTight)
+              continue;
+
+            if(!(isLoose || isTight))
+              continue;
+
+            // No need to keep events without jets
+            if(validJets.size() == 0)
               continue;
 
             // So-called ISR jet requirement (even though it's on the pT of the leading jet)

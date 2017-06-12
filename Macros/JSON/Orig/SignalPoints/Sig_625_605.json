@@ -6,9 +6,8 @@
       "issignal":true,
       "spimpose":true,
       "color":807,
-      "lcolor":1,
       "lwidth":3,
-      "lstyle":3,
+      "lstyle":1,
       "fill":0,
       "marker":1,
       "label":"stop 625, neut 605",
@@ -22,7 +21,7 @@
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/SMS_T2tt_dM_10to80_genHT_160_genMET_80_mWMin_0p1",
-              "split":242
+              "split":201
             }
           ]
         }

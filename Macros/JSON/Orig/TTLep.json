@@ -11,6 +11,7 @@
           "tag":"TTJets_DiLepton",
           "xsec": 1.0,
           "br": 1.0,
+          "filesPerPart":5,
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/TTJets_DiLepton",
@@ -26,6 +27,7 @@
           "tag":"TTJets_SingleLeptonFromT",
           "xsec": 1.0,
           "br": 1.0,
+          "filesPerPart":5,
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/TTJets_SingleLeptonFromT",
@@ -41,6 +43,7 @@
           "tag":"TTJets_SingleLeptonFromTbar",
           "xsec": 1.0,
           "br": 1.0,
+          "filesPerPart":5,
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/TTJets_SingleLeptonFromTbar",

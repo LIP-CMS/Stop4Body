@@ -2,10 +2,23 @@
 
 #include <fstream>
 #include <sstream>
+#include <regex>
 
 #include "TDirectory.h"
+#include "TFile.h"
 
-using json = nlohmann::json;
+std::string cleanString(std::string inputStr)
+{
+  std::regex nonASCII("[^a-zA-Z0-9 _]");
+  std::regex multipleSpace(" +");
+  std::regex multipleUnderscore("_+");
+
+  std::string replaced = std::regex_replace(inputStr, nonASCII, "_");
+  replaced = std::regex_replace(replaced, multipleSpace, "_");
+  replaced = std::regex_replace(replaced, multipleUnderscore, "_");
+
+  return replaced;
+}
 
 SampleInfo::SampleInfo(json jsonInfo, std::string baseDir, std::string suffix):
   baseDir_(baseDir),
@@ -16,6 +29,7 @@ SampleInfo::SampleInfo(json jsonInfo, std::string baseDir, std::string suffix):
   filterEfficiencyFile_(""),
   recordedLumi_(0)
 {
+  jsonBack_ = jsonInfo;
   if(jsonInfo.count("xsec") == 0 || jsonInfo.count("tag") == 0 || jsonInfo.count("paths") == 0)
     throw MissingJSONParam("Not all parameters are defined for the sample");
 
@@ -38,6 +52,17 @@ SampleInfo::SampleInfo(json jsonInfo, std::string baseDir, std::string suffix):
   if(jsonInfo.count("recordedLumi") > 0)
     recordedLumi_ = jsonInfo["recordedLumi"];
 
+  filesPerPart_ = 10;
+  if(jsonInfo.count("filesPerPart") > 0)
+    filesPerPart_ = jsonInfo["filesPerPart"];
+  if(filesPerPart_ <= 0)
+    filesPerPart_ = 10;
+
+  runPart_ = -999;
+  if(jsonInfo.count("runPart") > 0)
+    runPart_ = jsonInfo["runPart"];
+
+  nParts_ = 1;
   if(baseDir_ != "")
   {
     std::string file = baseDir_ + "/" + tag_;
@@ -51,6 +76,8 @@ SampleInfo::SampleInfo(json jsonInfo, std::string baseDir, std::string suffix):
   }
   else
   {
+    std::vector<std::string> allPaths;
+
     for(auto &path: jsonInfo["paths"])
     {
       std::string basePath = path["path"];
@@ -62,10 +89,32 @@ SampleInfo::SampleInfo(json jsonInfo, std::string baseDir, std::string suffix):
         std::string file;
         converter << basePath << "/Chunk" << i << "/treeProducerStop4Body/tree.root";
         converter >> file;
+
+        allPaths.push_back(file);
+      }
+    }
+
+    nParts_ = (allPaths.size() / filesPerPart_) + ((allPaths.size() % filesPerPart_ != 0)?(1):(0));
+
+    if(runPart_ == -999)
+    {
+      for(auto &file: allPaths)
+      {
         if(fileExists(file))
           filePaths_.push_back(file);
         else
           missingFiles_.push_back(file);
+      }
+    }
+
+    if(runPart_ >= 0)
+    {
+      for(int i = runPart_ * filesPerPart_; (i < (runPart_ + 1) * filesPerPart_) && (i < static_cast<int>(allPaths.size())); ++i)
+      {
+        if(fileExists(allPaths[i]))
+          filePaths_.push_back(allPaths[i]);
+        else
+          missingFiles_.push_back(allPaths[i]);
       }
     }
   }
@@ -106,6 +155,28 @@ doubleUnc SampleInfo::getYield(std::string cut, std::string weight)
   return retVal;
 }
 
+bool SampleInfo::hasBDT() const
+{
+  if(filePaths_.size() == 0)
+    return false;
+
+  TFile file(filePaths_[0].c_str(), "READ");
+  TTree* tree = static_cast<TTree*>(file.Get("bdttree"));
+
+  bool hasBDT = false;
+
+  if(tree != nullptr)
+  {
+    auto branch = tree->FindBranch("BDT");
+    if(branch != nullptr)
+      hasBDT = true;
+    delete branch;
+  }
+  delete tree;
+
+  return hasBDT;
+}
+
 ProcessInfo::ProcessInfo(json jsonInfo, std::string baseDir, std::string suffix):
   baseDir_(baseDir),
   suffix_(suffix),
@@ -117,12 +188,13 @@ ProcessInfo::ProcessInfo(json jsonInfo, std::string baseDir, std::string suffix)
   spimpose_(false),
   color_(1),
   lcolor_(1),
-  lwidth_(3),
-  lstyle_(3),
+  lwidth_(1),
+  lstyle_(1),
   fill_(0),
   marker_(1),
   mcolor_(1)
 {
+  jsonBack_ = jsonInfo;
   if(jsonInfo.count("tag") == 0 || jsonInfo.count("color") == 0 || jsonInfo.count("label") == 0 || jsonInfo.count("files") == 0)
     throw MissingJSONParam("Not all parameters are defined for the sample");
 
@@ -207,7 +279,8 @@ std::vector<std::string> ProcessInfo::getAllFiles()
 
 TH1D* ProcessInfo::getHist(std::string variable, std::string axis, std::string weight, int bins, double xmin, double xmax)
 {
-  TH1D* retVal = new TH1D((variable+"_"+tag_).c_str(), (label_+";"+axis).c_str(), bins, xmin, xmax);
+  std::string histName = cleanString(variable+"_"+tag_);
+  TH1D* retVal = new TH1D(histName.c_str(), (label_+";"+axis).c_str(), bins, xmin, xmax);
   retVal->Sumw2();
 
   auto cwd = gDirectory;
@@ -220,7 +293,7 @@ TH1D* ProcessInfo::getHist(std::string variable, std::string axis, std::string w
     chain->Add(file.c_str());
   }
 
-  chain->Draw((variable+">>"+variable+"_"+tag_).c_str(), (weight).c_str(), "goff");
+  chain->Draw((variable+">>"+histName).c_str(), (weight).c_str(), "goff");
 
   retVal->SetLineColor(color_);
   retVal->SetFillColor(fill_);
@@ -229,6 +302,31 @@ TH1D* ProcessInfo::getHist(std::string variable, std::string axis, std::string w
   retVal->SetLineWidth(lwidth_);
   retVal->SetLineStyle(lstyle_);
   retVal->SetMarkerStyle(marker_);
+
+  cwd->cd();
+  delete chain;
+
+  return retVal;
+}
+
+TH2D* ProcessInfo::get2DHist(std::string variableX, std::string variableY, std::string axis, std::string weight, int binsX, double minX, double maxX, int binsY, double minY, double maxY)
+{
+  std::string histName = cleanString(variableY+"vs"+variableX+"_"+tag_);
+
+  TH2D* retVal = new TH2D(histName.c_str(), (label_+";"+axis).c_str(), binsX, minX, maxX, binsY, minY, maxY);
+  retVal->Sumw2();
+
+  auto cwd = gDirectory;
+
+  TChain* chain = new TChain("bdttree");
+  auto files = getAllFiles();
+  for(auto& file : files)
+  {
+    //std::cout << "Adding file '" << file << "' to the chain" << std::endl;
+    chain->Add(file.c_str());
+  }
+
+  chain->Draw((variableY+":"+variableX+">>"+histName).c_str(), weight.c_str(), "goff");
 
   cwd->cd();
   delete chain;
@@ -273,6 +371,14 @@ double ProcessInfo::getLumi() const
   return lumi;
 }
 
+bool ProcessInfo::hasBDT() const
+{
+  if(samples_.size() == 0)
+    return false;
+
+  return samples_[0].hasBDT();
+}
+
 SampleReader::SampleReader(std::string fileName, std::string baseDir, std::string suffix):
   inputFile_(fileName),
   baseDir_(baseDir),
@@ -281,6 +387,7 @@ SampleReader::SampleReader(std::string fileName, std::string baseDir, std::strin
   json jsonFile;
   std::ifstream inputFile(inputFile_);
   inputFile >> jsonFile;
+  jsonBack_ = jsonFile;
 
   if(jsonFile.count("lines") == 0)
     throw MissingJSONParam("The JSON file does not contain the 'lines' entry. It is not a valid file.");
@@ -462,4 +569,12 @@ double SampleReader::getLumi() const
       lumi += process.getLumi();
 
   return lumi;
+}
+
+bool SampleReader::hasBDT() const
+{
+  if(processes_.size() == 0)
+    return false;
+
+  return processes_[0].hasBDT();
 }

@@ -11,6 +11,7 @@
           "tag":"Wjets_2500toInf",
           "xsec": 0.0389136,
           "br": 1.0,
+          "filesPerPart":10,
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/WJetsToLNu_HT2500toInf",

@@ -13,6 +13,7 @@
           "xsec":1.0,
           "br":1.0,
           "recordedLumi":5788,
+          "filesPerPart":25,
           "paths":[
             {
               "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/JetHT_Run2016B_03Feb2017_v2",
@@ -25,6 +26,7 @@
           "xsec":1.0,
           "br":1.0,
           "recordedLumi":2573,
+          "filesPerPart":25,
           "paths":[
             {
               "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/JetHT_Run2016C_03Feb2017",
@@ -37,6 +39,7 @@
           "xsec":1.0,
           "br":1.0,
           "recordedLumi":4248,
+          "filesPerPart":25,
           "paths":[
             {
               "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/JetHT_Run2016D_03Feb2017",
@@ -49,6 +52,7 @@
           "xsec":1.0,
           "br":1.0,
           "recordedLumi":4009,
+          "filesPerPart":25,
           "paths":[
             {
               "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/JetHT_Run2016E_03Feb2017",
@@ -61,6 +65,7 @@
           "xsec":1.0,
           "br":1.0,
           "recordedLumi":3102,
+          "filesPerPart":25,
           "paths":[
             {
               "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/JetHT_Run2016F_03Feb2017",
@@ -73,6 +78,7 @@
           "xsec":1.0,
           "br":1.0,
           "recordedLumi":7539,
+          "filesPerPart":25,
           "paths":[
             {
               "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/JetHT_Run2016G_03Feb2017",
@@ -85,6 +91,7 @@
           "xsec":1.0,
           "br":1.0,
           "recordedLumi":8391,
+          "filesPerPart":25,
           "paths":[
             {
               "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/JetHT_Run2016H_03Feb2017_v2",
@@ -97,6 +104,7 @@
           "xsec":1.0,
           "br":1.0,
           "recordedLumi":215,
+          "filesPerPart":25,
           "paths":[
             {
               "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/JetHT_Run2016H_03Feb2017_v3",

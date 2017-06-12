@@ -1,7 +1,15 @@
 {
+  "cuts":[
+    {
+      "name":"Preselection",
+      "expression":"(HT > 200) && (Met > 200) && (nGoodEl+nGoodMu <= 2) && (Jet1Pt > 100)",
+      "latex":"Preselection"
+    }
+  ],
   "variables":[
     {
       "expression":"nVert",
+      "legTop":true,
       "min":0.0,
       "max":50.0,
       "bins":50

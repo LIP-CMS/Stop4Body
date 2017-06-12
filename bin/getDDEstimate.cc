@@ -39,12 +39,15 @@ int main(int argc, char** argv)
   bool verbose = false;
   std::string looseNotTightDirectory = "";
 
-  std::string baseSelection = "(HT > 200) && (Jet1Pt > 110) && (Met > 280) && (nGoodEl + nGoodMu <= 2) && (LepPt < 30.) && (HLT_Mu == 1)";
-  std::string wjetsControlRegion = "(BDT < -0.1) && (NbLoose == 0)";
-  std::string ttbarControlRegion = "(BDT < -0.1) && (NbTight > 0)";
-  std::string signalRegion       = "(BDT > 0.4)";
-  std::string wjetsSignalRegionClosure = "(BDT > 0.4) && (NbLoose == 0)";
-  std::string ttbarSignalRegionClosure = "(BDT > 0.4) && (NbTight > 0)";
+  //std::string baseSelection = "(HT > 200) && (Jet1Pt > 110) && (Met > 280) && (LepPt < 30.) && (HLT_Mu == 1)";
+  std::string baseSelection = "(HT > 200) && (Jet1Pt > 110) && (Met > 280) && (LepPt < 30.)";
+  //std::string baseSelection = "(HT > 200) && (Jet1Pt > 110) && (Met > 280) && (LepPt < 280.) && (HLT_Mu == 1)";
+  //std::string baseSelection = "(HT > 200) && (Jet1Pt > 110) && (Met > 280)";
+  std::string wjetsControlRegion = "(BDT < 0.2) && (NbLoose == 0)";
+  std::string ttbarControlRegion = "(BDT < 0.2) && (NbTight > 0)";
+  std::string signalRegion       = "(BDT > 0.44)";
+  std::string wjetsSignalRegionClosure = "(BDT > 0.44) && (NbLoose == 0)";
+  std::string ttbarSignalRegionClosure = "(BDT > 0.44) && (NbTight > 0)";
 
   if(argc < 2)
   {
@@ -287,10 +290,10 @@ int main(int argc, char** argv)
 
   injectDD(outputTable, wjets, ttbar, Data, MC, baseSelection + " && " + signalRegion, baseSelection + " && " + wjetsControlRegion, baseSelection + " && " + ttbarControlRegion, mcWeight);
 
-  outputTable << "\\hline\n";
+  //outputTable << "\\hline\n";
 
-  promptDD(outputTable, wjets, Data, MC, baseSelection + " && " + signalRegion, baseSelection + " && " + wjetsControlRegion, mcWeight);
-  promptDD(outputTable, ttbar, Data, MC, baseSelection + " && " + signalRegion, baseSelection + " && " + ttbarControlRegion, mcWeight);
+  //promptDD(outputTable, wjets, Data, MC, baseSelection + " && " + signalRegion, baseSelection + " && " + wjetsControlRegion, mcWeight);
+  //promptDD(outputTable, ttbar, Data, MC, baseSelection + " && " + signalRegion, baseSelection + " && " + ttbarControlRegion, mcWeight);
 
   if(looseNotTightDirectory != "")
   {

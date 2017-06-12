@@ -11,6 +11,7 @@
           "tag":"QCD_HT50to100",
           "xsec": 27500000.0,
           "br": 1.0,
+          "filesPerPart":10,
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/QCD_HT50to100",
@@ -22,6 +23,7 @@
           "tag":"QCD_HT100to200",
           "xsec": 27500000.0,
           "br": 1.0,
+          "filesPerPart":10,
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/QCD_HT100to200",
@@ -33,6 +35,7 @@
           "tag":"QCD_HT200to300",
           "xsec": 1735000.0,
           "br": 1.0,
+          "filesPerPart":10,
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/QCD_HT200to300",
@@ -48,6 +51,7 @@
           "tag":"QCD_HT300to500",
           "xsec": 1,
           "br": 1.0,
+          "filesPerPart":10,
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/QCD_HT300to500",
@@ -63,6 +67,7 @@
           "tag":"QCD_HT500to700",
           "xsec": 29400.0,
           "br": 1.0,
+          "filesPerPart":10,
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/QCD_HT500to700",
@@ -78,6 +83,7 @@
           "tag":"QCD_HT700to1000",
           "xsec": 6524.0,
           "br": 1.0,
+          "filesPerPart":10,
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/QCD_HT700to1000",
@@ -93,6 +99,7 @@
           "tag":"QCD_HT1000to1500",
           "xsec": 1064.0,
           "br": 1.0,
+          "filesPerPart":10,
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/QCD_HT1000to1500",
@@ -108,6 +115,7 @@
           "tag":"QCD_HT1500to2000",
           "xsec": 121.5,
           "br": 1.0,
+          "filesPerPart":10,
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/QCD_HT1500to2000",
@@ -123,6 +131,7 @@
           "tag":"QCD_HT2000toInf",
           "xsec": 25.42,
           "br": 1.0,
+          "filesPerPart":10,
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/QCD_HT2000toInf",

@@ -23,6 +23,10 @@ if [[ -d ${INPUT} ]] ; then
   getDDEstimate --json ${JSON_PATH}/plot2016.json     --outDir ${OUTPUT}     --inDir ${INPUT} --suffix bdt --looseNotTight ${LNTDIR}
   getDDEstimate --json ${JSON_PATH}/plot2016_pow.json --outDir ${OUTPUT_POW} --inDir ${INPUT} --suffix bdt --looseNotTight ${LNTDIR}
   getDDEstimate --json ${JSON_PATH}/plot2016_lep.json --outDir ${OUTPUT_LEP} --inDir ${INPUT} --suffix bdt --looseNotTight ${LNTDIR}
+
+  makePlots --json ${JSON_PATH}/plot2016.json --outDir ${OUTPUT} --inDir ${INPUT} --variables variablesSR.json --cuts variablesSR.json --suffix bdt
+  makePlots --json ${JSON_PATH}/plot2016_pow.json --outDir ${OUTPUT_POW} --inDir ${INPUT} --variables variablesSR.json --cuts variablesSR.json --suffix bdt
+  makePlots --json ${JSON_PATH}/plot2016_lep.json --outDir ${OUTPUT_LEP} --inDir ${INPUT} --variables variablesSR.json --cuts variablesSR.json --suffix bdt --unblind
 fi
 
 
@@ -46,7 +50,7 @@ if [[ -d ${INPUT_SWAP} ]] ; then
   getDDEstimate --json ${JSON_PATH}/plot2016swap_pow.json --outDir ${OUTPUT_SWAP_POW} --inDir ${INPUT_SWAP} --suffix bdt
   getDDEstimate --json ${JSON_PATH}/plot2016swap_lep.json --outDir ${OUTPUT_SWAP_LEP} --inDir ${INPUT_SWAP} --suffix bdt
 
-  makePlots --json ${JSON_PATH}/plot2016swap.json --outDir ${OUTPUT_SWAP} --inDir ${INPUT_SWAP} --variables variablesClosure.json --cuts variablesClosure.json --suffix bdt
-  makePlots --json ${JSON_PATH}/plot2016swap_pow.json --outDir ${OUTPUT_SWAP_POW} --inDir ${INPUT_SWAP} --variables variablesClosure.json --cuts variablesClosure.json --suffix bdt
-  makePlots --json ${JSON_PATH}/plot2016swap_lep.json --outDir ${OUTPUT_SWAP_LEP} --inDir ${INPUT_SWAP} --variables variablesClosure.json --cuts variablesClosure.json --suffix bdt
+  makePlots --json ${JSON_PATH}/plot2016swap.json --outDir ${OUTPUT_SWAP} --inDir ${INPUT_SWAP} --variables variablesClosure.json --cuts variablesClosure.json --suffix bdt --unblind
+  makePlots --json ${JSON_PATH}/plot2016swap_pow.json --outDir ${OUTPUT_SWAP_POW} --inDir ${INPUT_SWAP} --variables variablesClosure.json --cuts variablesClosure.json --suffix bdt --unblind
+  makePlots --json ${JSON_PATH}/plot2016swap_lep.json --outDir ${OUTPUT_SWAP_LEP} --inDir ${INPUT_SWAP} --variables variablesClosure.json --cuts variablesClosure.json --suffix bdt --unblind
 fi

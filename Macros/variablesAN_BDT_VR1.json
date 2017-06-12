@@ -1,0 +1,41 @@
+{
+  "cuts":[
+    {
+      "name":"PreselectionMVA_allLep_VR1",
+      "expression":"(HT > 200) && (Met > 200) && (Met < 280) && (nGoodEl+nGoodMu <= 2) && (Jet1Pt > 110)",
+      "latex":"Preselection MVA"
+    },
+    {
+      "name":"PreselectionMVA_lep30_VR1",
+      "expression":"(HT > 200) && (Met > 200) && (Met < 280) && (nGoodEl+nGoodMu <= 2) && (Jet1Pt > 110) && (LepPt < 30)",
+      "latex":"Preselection MVA ($p_T(l) < 30$)"
+    }
+  ],
+  "variables":[
+    {
+      "expression":"Met",
+      "legPos":"top",
+      "min":250.0,
+      "max":600.0,
+      "bins":35
+    },
+    {
+      "name":"Met_ext",
+      "expression":"Met",
+      "legPos":"top",
+      "min":0.0,
+      "max":1000.0,
+      "bins":50
+    },
+    {
+      "expression":"BDT",
+      "label":"BDT",
+      "legPos":"top",
+      "min":-0.6,
+      "max":0.6,
+      "bins":48
+    }
+  ],
+  "2Dplots":[
+  ]
+}

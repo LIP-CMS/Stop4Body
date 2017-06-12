@@ -11,6 +11,7 @@
           "tag":"TTJets",
           "xsec": 831.76,
           "br": 1.0,
+          "filesPerPart":5,
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/TTJets",

@@ -11,6 +11,7 @@
           "tag":"Wjets_200to400",
           "xsec": 435.6,
           "br": 1.0,
+          "filesPerPart":10,
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/WJetsToLNu_HT200to400",

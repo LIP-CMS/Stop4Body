@@ -17,12 +17,18 @@ mergeJSONs $JSON_PATH/TT_pow.json             $JSON_PATH/Orig/TT_pow.json $JSON_
 #mergeJSONs $JSON_PATH/otherMC2.json           $JSON_PATH/Orig/ZInv.json
 #mergeJSONs $JSON_PATH/otherMC3.json           $JSON_PATH/Orig/VV.json       $JSON_PATH/Orig/SingleTop.json
 #mergeJSONs $JSON_PATH/otherMC4.json           $JSON_PATH/Orig/DYJets.json
-cp         $JSON_PATH/Orig/QCD.json           $JSON_PATH/otherMC1.json
+mergeJSONs $JSON_PATH/otherMC1.json           $JSON_PATH/Orig/QCD.json $JSON_PATH/Orig/TTGJets.json $JSON_PATH/Orig/TTW_LO.json $JSON_PATH/Orig/TTZ_LO.json $JSON_PATH/Orig/TTWToLNu.json $JSON_PATH/Orig/TTWToQQ.json $JSON_PATH/Orig/TTZToQQ.json $JSON_PATH/Orig/TTZToLLNuNu.json
+mergeJSONs $JSON_PATH/ttx.json                $JSON_PATH/Orig/TTGJets.json $JSON_PATH/Orig/TTW_LO.json $JSON_PATH/Orig/TTZ_LO.json $JSON_PATH/Orig/TTWToLNu.json $JSON_PATH/Orig/TTWToQQ.json $JSON_PATH/Orig/TTZToQQ.json $JSON_PATH/Orig/TTZToLLNuNu.json
 cp         $JSON_PATH/Orig/ZInv.json          $JSON_PATH/otherMC2.json
 mergeJSONs $JSON_PATH/otherMC3.json           $JSON_PATH/Orig/VV.json      $JSON_PATH/Orig/SingleTop.json
 cp         $JSON_PATH/Orig/DYJets.json        $JSON_PATH/otherMC4.json
-mergeJSONs $JSON_PATH/otherMC.json            $JSON_PATH/otherMC1.json     $JSON_PATH/otherMC2.json $JSON_PATH/otherMC3.json $JSON_PATH/otherMC4.json
+mergeJSONs $JSON_PATH/otherMC.json            $JSON_PATH/Orig/QCD.json $JSON_PATH/Orig/TTGJets.json $JSON_PATH/Orig/TTWToLNu.json $JSON_PATH/Orig/TTWToQQ.json $JSON_PATH/Orig/TTZToQQ.json $JSON_PATH/Orig/TTZToLLNuNu.json $JSON_PATH/otherMC2.json $JSON_PATH/otherMC3.json $JSON_PATH/otherMC4.json
 mergeJSONs $JSON_PATH/allMC.json              $JSON_PATH/backgroundMC.json $JSON_PATH/TT_pow.json $JSON_PATH/TTbar_LO.json $JSON_PATH/TTLep.json $JSON_PATH/otherMC1.json $JSON_PATH/otherMC2.json $JSON_PATH/otherMC3.json $JSON_PATH/otherMC4.json
+mergeJSONs $JSON_PATH/allMCQuick.json         $JSON_PATH/Orig/Wjets.json $JSON_PATH/otherMC1.json $JSON_PATH/otherMC3.json
+#$JSON_PATH/TTLep.json $JSON_PATH/otherMC2.json $JSON_PATH/otherMC4.json
+
+#Make a JSON with the samples that are to be processed:
+mergeJSONs $JSON_PATH/MC2Process.json         $JSON_PATH/Orig/Wjets.json $JSON_PATH/Orig/TTbar.json $JSON_PATH/Orig/TTbar_LO.json $JSON_PATH/Orig/TTLep.json $JSON_PATH/TT_pow.json $JSON_PATH/Orig/QCD.json $JSON_PATH/Orig/ZInv.json $JSON_PATH/Orig/VV.json $JSON_PATH/Orig/SingleTop.json $JSON_PATH/Orig/DYJets.json $JSON_PATH/Orig/TTGJets.json $JSON_PATH/Orig/TTW_LO.json $JSON_PATH/Orig/TTZ_LO.json $JSON_PATH/Orig/TTWToLNu.json $JSON_PATH/Orig/TTWToQQ.json $JSON_PATH/Orig/TTZToQQ.json $JSON_PATH/Orig/TTZToLLNuNu.json
 
 # Copy the data JSON over, so that all locations are consistent
 cp         $JSON_PATH/Orig/Data.json          $JSON_PATH/
@@ -46,6 +52,23 @@ mergeJSONs $JSON_PATH/plot2016_lep.json       $JSON_PATH/otherMC.json       $JSO
 mergeJSONs $JSON_PATH/plot2016swap.json           $JSON_PATH/otherMC.json       $JSON_PATH/Orig/TTbar.json    $JSON_PATH/Orig/Wjets.json  $JSON_PATH/Orig/DataSingleLepton.json $JSON_PATH/Orig/SignalPoints/Sig_300_270.json
 mergeJSONs $JSON_PATH/plot2016swap_pow.json       $JSON_PATH/otherMC.json       $JSON_PATH/Orig/TT_pow.json   $JSON_PATH/Orig/Wjets.json  $JSON_PATH/Orig/DataSingleLepton.json $JSON_PATH/Orig/SignalPoints/Sig_300_270.json
 mergeJSONs $JSON_PATH/plot2016swap_lep.json       $JSON_PATH/otherMC.json       $JSON_PATH/Orig/TTLep.json    $JSON_PATH/Orig/Wjets.json  $JSON_PATH/Orig/DataSingleLepton.json $JSON_PATH/Orig/SignalPoints/Sig_300_270.json
+
+mergeJSONs $JSON_PATH/plot2016_DM10RP.json     $JSON_PATH/otherMC.json       $JSON_PATH/Orig/TTLep.json    $JSON_PATH/Orig/Wjets.json  $JSON_PATH/Orig/Data.json         $JSON_PATH/Orig/SignalPoints/Sig_475_465.json
+mergeJSONs $JSON_PATH/plot2016swap_DM10RP.json $JSON_PATH/otherMC.json       $JSON_PATH/Orig/TTLep.json    $JSON_PATH/Orig/Wjets.json  $JSON_PATH/Orig/DataSingleLepton.json $JSON_PATH/Orig/SignalPoints/Sig_475_465.json
+mergeJSONs $JSON_PATH/plot2016_DM20RP.json     $JSON_PATH/otherMC.json       $JSON_PATH/Orig/TTLep.json    $JSON_PATH/Orig/Wjets.json  $JSON_PATH/Orig/Data.json         $JSON_PATH/Orig/SignalPoints/Sig_500_480.json
+mergeJSONs $JSON_PATH/plot2016swap_DM20RP.json $JSON_PATH/otherMC.json       $JSON_PATH/Orig/TTLep.json    $JSON_PATH/Orig/Wjets.json  $JSON_PATH/Orig/DataSingleLepton.json $JSON_PATH/Orig/SignalPoints/Sig_500_480.json
+mergeJSONs $JSON_PATH/plot2016_DM30RP.json     $JSON_PATH/otherMC.json       $JSON_PATH/Orig/TTLep.json    $JSON_PATH/Orig/Wjets.json  $JSON_PATH/Orig/Data.json         $JSON_PATH/Orig/SignalPoints/Sig_550_520.json
+mergeJSONs $JSON_PATH/plot2016swap_DM30RP.json $JSON_PATH/otherMC.json       $JSON_PATH/Orig/TTLep.json    $JSON_PATH/Orig/Wjets.json  $JSON_PATH/Orig/DataSingleLepton.json $JSON_PATH/Orig/SignalPoints/Sig_550_520.json
+mergeJSONs $JSON_PATH/plot2016_DM40RP.json     $JSON_PATH/otherMC.json       $JSON_PATH/Orig/TTLep.json    $JSON_PATH/Orig/Wjets.json  $JSON_PATH/Orig/Data.json         $JSON_PATH/Orig/SignalPoints/Sig_550_510.json
+mergeJSONs $JSON_PATH/plot2016swap_DM40RP.json $JSON_PATH/otherMC.json       $JSON_PATH/Orig/TTLep.json    $JSON_PATH/Orig/Wjets.json  $JSON_PATH/Orig/DataSingleLepton.json $JSON_PATH/Orig/SignalPoints/Sig_550_510.json
+mergeJSONs $JSON_PATH/plot2016_DM50RP.json     $JSON_PATH/otherMC.json       $JSON_PATH/Orig/TTLep.json    $JSON_PATH/Orig/Wjets.json  $JSON_PATH/Orig/Data.json         $JSON_PATH/Orig/SignalPoints/Sig_525_475.json
+mergeJSONs $JSON_PATH/plot2016swap_DM50RP.json $JSON_PATH/otherMC.json       $JSON_PATH/Orig/TTLep.json    $JSON_PATH/Orig/Wjets.json  $JSON_PATH/Orig/DataSingleLepton.json $JSON_PATH/Orig/SignalPoints/Sig_525_475.json
+mergeJSONs $JSON_PATH/plot2016_DM60RP.json     $JSON_PATH/otherMC.json       $JSON_PATH/Orig/TTLep.json    $JSON_PATH/Orig/Wjets.json  $JSON_PATH/Orig/Data.json         $JSON_PATH/Orig/SignalPoints/Sig_525_465.json
+mergeJSONs $JSON_PATH/plot2016swap_DM60RP.json $JSON_PATH/otherMC.json       $JSON_PATH/Orig/TTLep.json    $JSON_PATH/Orig/Wjets.json  $JSON_PATH/Orig/DataSingleLepton.json $JSON_PATH/Orig/SignalPoints/Sig_525_465.json
+mergeJSONs $JSON_PATH/plot2016_DM70RP.json     $JSON_PATH/otherMC.json       $JSON_PATH/Orig/TTLep.json    $JSON_PATH/Orig/Wjets.json  $JSON_PATH/Orig/Data.json         $JSON_PATH/Orig/SignalPoints/Sig_525_455.json
+mergeJSONs $JSON_PATH/plot2016swap_DM70RP.json $JSON_PATH/otherMC.json       $JSON_PATH/Orig/TTLep.json    $JSON_PATH/Orig/Wjets.json  $JSON_PATH/Orig/DataSingleLepton.json $JSON_PATH/Orig/SignalPoints/Sig_525_455.json
+mergeJSONs $JSON_PATH/plot2016_DM80RP.json     $JSON_PATH/otherMC.json       $JSON_PATH/Orig/TTLep.json    $JSON_PATH/Orig/Wjets.json  $JSON_PATH/Orig/Data.json         $JSON_PATH/Orig/SignalPoints/Sig_500_420.json
+mergeJSONs $JSON_PATH/plot2016swap_DM80RP.json $JSON_PATH/otherMC.json       $JSON_PATH/Orig/TTLep.json    $JSON_PATH/Orig/Wjets.json  $JSON_PATH/Orig/DataSingleLepton.json $JSON_PATH/Orig/SignalPoints/Sig_500_420.json
 
 # Make a JSON for the PU tests
 mergeJSONs $JSON_PATH/puTests.json            $JSON_PATH/Orig/TTbar_LO.json $JSON_PATH/Orig/Data.json
@@ -81,3 +104,7 @@ mergeJSONs $JSON_PATH/stop800.json            $JSON_PATH/Orig/SignalPoints/Sig_8
 # Make a json with all samples
 mergeJSONs $JSON_PATH/allSamples.json         $JSON_PATH/allMC.json $JSON_PATH/Orig/Data.json $JSON_PATH/allPD.json $JSON_PATH/Orig/DeltaM.json $JSON_PATH/stop250.json $JSON_PATH/stop275.json $JSON_PATH/stop300.json $JSON_PATH/stop325.json $JSON_PATH/stop350.json $JSON_PATH/stop375.json $JSON_PATH/stop400.json $JSON_PATH/stop425.json $JSON_PATH/stop450.json $JSON_PATH/stop475.json $JSON_PATH/stop500.json $JSON_PATH/stop525.json $JSON_PATH/stop550.json $JSON_PATH/stop575.json $JSON_PATH/stop600.json $JSON_PATH/stop625.json $JSON_PATH/stop650.json $JSON_PATH/stop675.json $JSON_PATH/stop700.json $JSON_PATH/stop725.json $JSON_PATH/stop750.json $JSON_PATH/stop775.json $JSON_PATH/stop800.json
 mergeJSONs $JSON_PATH/allSamplesSwap.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/DataSingleLepton.json  $JSON_PATH/Orig/DeltaM.json $JSON_PATH/stop250.json $JSON_PATH/stop275.json $JSON_PATH/stop300.json $JSON_PATH/stop325.json $JSON_PATH/stop350.json $JSON_PATH/stop375.json $JSON_PATH/stop400.json $JSON_PATH/stop425.json $JSON_PATH/stop450.json $JSON_PATH/stop475.json $JSON_PATH/stop500.json $JSON_PATH/stop525.json $JSON_PATH/stop550.json $JSON_PATH/stop575.json $JSON_PATH/stop600.json $JSON_PATH/stop625.json $JSON_PATH/stop650.json $JSON_PATH/stop675.json $JSON_PATH/stop700.json $JSON_PATH/stop725.json $JSON_PATH/stop750.json $JSON_PATH/stop775.json $JSON_PATH/stop800.json
+
+mergeJSONs $JSON_PATH/allSamplesQuick.json    $JSON_PATH/allMCQuick.json $JSON_PATH/Orig/Data.json
+#$JSON_PATH/stop250.json $JSON_PATH/stop275.json $JSON_PATH/stop300.json $JSON_PATH/stop325.json $JSON_PATH/stop350.json $JSON_PATH/stop375.json $JSON_PATH/stop400.json $JSON_PATH/stop425.json $JSON_PATH/stop450.json $JSON_PATH/stop475.json $JSON_PATH/stop500.json $JSON_PATH/stop525.json $JSON_PATH/stop550.json $JSON_PATH/stop575.json $JSON_PATH/stop600.json $JSON_PATH/stop625.json $JSON_PATH/stop650.json $JSON_PATH/stop675.json $JSON_PATH/stop700.json $JSON_PATH/stop725.json $JSON_PATH/stop750.json $JSON_PATH/stop775.json $JSON_PATH/stop800.json
+# $JSON_PATH/Orig/DeltaM.json

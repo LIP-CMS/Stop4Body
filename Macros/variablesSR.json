@@ -1,0 +1,32 @@
+{
+  "cuts":[
+    {
+      "name":"PreselectionMVA_lep30",
+      "expression":"(HT > 200) && (Met > 280) && (nGoodEl+nGoodMu <= 2) && (Jet1Pt > 110) && (LepPt < 30) && (BDT > 0.44)",
+      "expressionnew":"(HT > 200) && (Met > 280) && (nGoodEl+nGoodMu <= 2) && (Jet1Pt > 110) && (BDT > 0.46)",
+      "latex":"Preselection MVA ($p_T(l) < 30$)"
+    },
+    {
+      "name":"PreselectionMVA_lep30_wjets",
+      "expression":"(HT > 200) && (Met > 280) && (nGoodEl+nGoodMu <= 2) && (Jet1Pt > 110) && (LepPt < 30) && (BDT > 0.44) && (NbLoose == 0)",
+      "expressionnew":"(HT > 200) && (Met > 280) && (nGoodEl+nGoodMu <= 2) && (Jet1Pt > 110) && (BDT > 0.46) && (NbLoose == 0)",
+      "latex":"Preselection MVA ($p_T(l) < 30$)"
+    },
+    {
+      "name":"PreselectionMVA_lep30_ttbar",
+      "expression":"(HT > 200) && (Met > 280) && (nGoodEl+nGoodMu <= 2) && (Jet1Pt > 110) && (LepPt < 30) && (BDT > 0.44) && (NbTight > 0)",
+      "expressionnew":"(HT > 200) && (Met > 280) && (nGoodEl+nGoodMu <= 2) && (Jet1Pt > 110) && (BDT > 0.46) && (NbTight > 0)",
+      "latex":"Preselection MVA ($p_T(l) < 30$)"
+    }
+  ],
+  "variables":[
+    {
+      "expression":"BDT",
+      "min":-1.0,
+      "max":1.0,
+      "bins":20
+    }
+  ],
+  "2Dplots":[
+  ]
+}

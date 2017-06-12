@@ -34,8 +34,10 @@ fi
 
 BDTStudy --json ${JSON_PATH}/plot2016.json     --outDir ${OUTPUT}     --inDir ${INPUT} --suffix bdt
 BDTStudy --json ${JSON_PATH}/plot2016_pow.json --outDir ${OUTPUT_POW} --inDir ${INPUT} --suffix bdt
-BDTStudy --json ${JSON_PATH}/plot2016_lep.json --outDir ${OUTPUT_LEP} --inDir ${INPUT} --suffix bdt
+#BDTStudy --json ${JSON_PATH}/plot2016_lep.json --outDir ${OUTPUT_LEP} --inDir ${INPUT} --suffix bdt
+BDTStudy --json ${JSON_PATH}/plot2016_DM80RP.json --outDir ${OUTPUT_LEP} --inDir ${INPUT} --suffix bdt
 
 BDTStudy --json ${JSON_PATH}/plot2016swap.json     --outDir ${OUTPUTS}     --inDir ${INPUTS} --suffix bdt --unblind
 BDTStudy --json ${JSON_PATH}/plot2016swap_pow.json --outDir ${OUTPUTS_POW} --inDir ${INPUTS} --suffix bdt --unblind
-BDTStudy --json ${JSON_PATH}/plot2016swap_lep.json --outDir ${OUTPUTS_LEP} --inDir ${INPUTS} --suffix bdt --unblind
+#BDTStudy --json ${JSON_PATH}/plot2016swap_lep.json --outDir ${OUTPUTS_LEP} --inDir ${INPUTS} --suffix bdt --unblind
+BDTStudy --json ${JSON_PATH}/plot2016swap_DM80RP.json --outDir ${OUTPUTS_LEP} --inDir ${INPUTS} --suffix bdt --unblind

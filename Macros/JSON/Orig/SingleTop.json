@@ -11,6 +11,7 @@
           "tag":"TBar_tch_powheg",
           "xsec": 1.0,
           "br": 1.0,
+          "filesPerPart":10,
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/TBar_tch_powheg",
@@ -22,6 +23,7 @@
           "tag":"TBar_tWch_ext",
           "xsec": 1.0,
           "br": 1.0,
+          "filesPerPart":10,
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/TBar_tWch_ext",
@@ -33,6 +35,7 @@
           "tag":"T_tch_powheg",
           "xsec": 1.0,
           "br": 1.0,
+          "filesPerPart":10,
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/T_tch_powheg",
@@ -44,6 +47,7 @@
           "tag":"T_tWch_ext",
           "xsec": 1.0,
           "br": 1.0,
+          "filesPerPart":10,
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/T_tWch_ext",

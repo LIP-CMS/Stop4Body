@@ -103,11 +103,21 @@ int main(int argc, char **argv)
   //regions["test1"] = "(LepPt < 30)";
   //regions["test2"] = "(LepPt < 30) && (Met > 300)";
   //regions["test3"] = "(LepPt < 30) && (Met > 300) && (Jet1Pt > 110)";
-  regions["SR"]       = ("(LepPt < 30) && (Met > 300) && (Jet1Pt > 110) && (DPhiJet1Jet2 < 2.5) && (HT > 200)");
-  regions["CR_ttbar"] = ("(LepPt < 30) && (Met > 300) && (Jet1Pt > 110) && (DPhiJet1Jet2 < 2.5) && (HT > 200) && (NbTight > 0)");
-  regions["CR_wjets"] = ("(LepPt < 30) && (Met > 300) && (Jet1Pt > 110) && (DPhiJet1Jet2 < 2.5) && (HT > 200) && (NbLoose == 0)");
-  regions["VR_ttbar"] = ("(LepPt < 30) && (Met < 300) && (Jet1Pt > 110) && (DPhiJet1Jet2 < 2.5) && (HT > 200) && (NbTight > 1)");
-  regions["VR_wjets"] = ("(LepPt < 30) && (Met < 300) && (Jet1Pt > 110) && (DPhiJet1Jet2 < 2.5) && (HT > 200) && (NbLoose == 0)");
+  regions["SR"]       = ("(LepPt < 30) && (Met > 280) && (Jet1Pt > 110) && (HT > 200)");
+  regions["CR_ttbar"] = ("(LepPt < 30) && (Met > 280) && (Jet1Pt > 110) && (HT > 200) && (NbTight > 0)");
+  regions["CR_wjets"] = ("(LepPt < 30) && (Met > 280) && (Jet1Pt > 110) && (HT > 200) && (NbLoose == 0)");
+  regions["VR1_ttbar"] = ("(LepPt < 30) && (Met > 200) && (Met < 280) && (Jet1Pt > 110) && (HT > 200) && (NbTight > 1)");
+  regions["VR1_wjets"] = ("(LepPt < 30) && (Met > 200) && (Met < 280) && (Jet1Pt > 110) && (HT > 200) && (NbLoose == 0)");// */
+  /*regions["SR"]       = ("(Met > 280) && (Jet1Pt > 110) && (HT > 200)");
+  regions["CR_ttbar"] = ("(Met > 280) && (Jet1Pt > 110) && (HT > 200) && (NbTight > 0)");
+  regions["CR_wjets"] = ("(Met > 280) && (Jet1Pt > 110) && (HT > 200) && (NbLoose == 0)");
+  regions["VR1_ttbar"] = ("(Met > 200) && (Met < 280) && (Jet1Pt > 110) && (HT > 200) && (NbTight > 1)");
+  regions["VR1_wjets"] = ("(Met > 200) && (Met < 280) && (Jet1Pt > 110) && (HT > 200) && (NbLoose == 0)");// */
+  /*regions["SR"]       = ("(LepPt < 280) && (Met > 280) && (Jet1Pt > 110) && (HT > 200)");
+  regions["CR_ttbar"] = ("(LepPt < 280) && (Met > 280) && (Jet1Pt > 110) && (HT > 200) && (NbTight > 0)");
+  regions["CR_wjets"] = ("(LepPt < 280) && (Met > 280) && (Jet1Pt > 110) && (HT > 200) && (NbLoose == 0)");
+  regions["VR1_ttbar"] = ("(LepPt < 280) && (Met > 200) && (Met < 280) && (Jet1Pt > 110) && (HT > 200) && (NbTight > 1)");
+  regions["VR1_wjets"] = ("(LepPt < 280) && (Met > 200) && (Met < 280) && (Jet1Pt > 110) && (HT > 200) && (NbLoose == 0)");// */
 
   std::stringstream converter;
   std::string mcWeight;
@@ -136,8 +146,8 @@ int main(int argc, char **argv)
       auto theBin = dataH->FindBin(0.3);
       for(int i = theBin; i < 28; ++i)
       {
-        dataH->SetBinContent(i, 0.1);
-        dataH->SetBinError(i, 0.1);
+        dataH->SetBinContent(i, 0.01);
+        dataH->SetBinError(i, 0.01);
       }
     }
 

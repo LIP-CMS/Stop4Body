@@ -14,6 +14,16 @@
       "name":"PreselectionMVA_lep30",
       "expression":"(HT > 200) && (Met > 280) && (nGoodEl+nGoodMu <= 2) && (Jet1Pt > 110) && (LepPt < 30)",
       "latex":"Preselection MVA ($p_T(l) < 30$)"
+    },
+    {
+      "name":"PreselectionMVA_lep30_wjets",
+      "expression":"(HT > 200) && (Met > 280) && (nGoodEl+nGoodMu <= 2) && (Jet1Pt > 110) && (LepPt < 30) && (NbLoose == 0)",
+      "latex":"Preselection MVA ($p_T(l) < 30$)"
+    },
+    {
+      "name":"PreselectionMVA_lep30_ttbar",
+      "expression":"(HT > 200) && (Met > 280) && (nGoodEl+nGoodMu <= 2) && (Jet1Pt > 110) && (LepPt < 30) && (NbTight > 0)",
+      "latex":"Preselection MVA ($p_T(l) < 30$)"
     }
   ],
   "optionalCuts":[
@@ -51,12 +61,14 @@
   "variables":[
     {
       "expression":"nVert",
+      "legPos":"top",
       "min":0.0,
       "max":50.0,
       "bins":50
     },
     {
       "expression":"Met",
+      "legPos":"top",
       "min":250.0,
       "max":600.0,
       "bins":35
@@ -64,6 +76,7 @@
     {
       "name":"Met_ext",
       "expression":"Met",
+      "legPos":"top",
       "min":0.0,
       "max":1000.0,
       "bins":50
@@ -71,6 +84,7 @@
     {
       "expression":"HT",
       "label":"H_{T}",
+      "legPos":"top",
       "min":200.0,
       "max":1000.0,
       "bins":40
@@ -78,6 +92,7 @@
     {
       "expression":"NbLoose",
       "label":"N_{b}^{L}",
+      "legPos":"top",
       "min":-0.5,
       "max":6.5,
       "bins":7
@@ -85,6 +100,7 @@
     {
       "expression":"Njet",
       "label":"N_{J}",
+      "legPos":"top",
       "min":-0.5,
       "max":6.5,
       "bins":7
@@ -92,6 +108,7 @@
     {
       "expression":"LepPt",
       "label":"p_{T}(l)",
+      "legPos":"top",
       "max":35.0,
       "bins":20
     },
@@ -99,8 +116,61 @@
       "name":"LepPt_ext",
       "expression":"LepPt",
       "label":"p_{T}(l)",
+      "legPos":"top",
       "max":105.0,
       "bins":30
+    }
+  ],
+  "2Dplots":[
+    {
+      "name":"IsoVSBDT",
+      "X":{
+        "expression":"BDT",
+        "min": -0.6,
+        "max": 0.6,
+        "bins": 48
+      },
+      "Y":{
+        "name":"HybIso",
+        "expression":"LepIso03*min(LepPt,25)",
+        "label":"HybIso",
+        "min": 0,
+        "max": 20,
+        "bins": 20
+      }
+    },
+    {
+      "name":"RelIsoVSBDT",
+      "X":{
+        "expression":"BDT",
+        "min": -0.6,
+        "max": 0.6,
+        "bins": 48
+      },
+      "Y":{
+        "name":"RelIso",
+        "expression":"LepIso03",
+        "label":"RelIso",
+        "min": 0,
+        "max": 1,
+        "bins": 20
+      }
+    },
+    {
+      "name":"LepPtVSBDT",
+      "X":{
+        "expression":"BDT",
+        "min": -0.6,
+        "max": 0.6,
+        "bins": 48
+      },
+      "Y":{
+        "expression":"LepPt",
+        "min": 3.5,
+        "max": 38,
+        "bins": 23,
+        "note":"The bins start at 3.5 and have a pitch of 1.5. Chose the number of bins giving a nice number around 40"
+      }
     }
   ]
 }

@@ -1,0 +1,29 @@
+{
+  "lines":[
+    {
+      "tag":"ttx",
+      "isdata":false,
+      "color":620,
+      "lcolor":1,
+      "label":"t#bar{t}X",
+      "files":[
+        {
+          "tag":"TTWToLNu",
+          "xsec": 1.0,
+          "br": 1.0,
+          "filesPerPart":5,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/TTWToLNu_ext",
+              "split":33
+            },
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/TTWToLNu_ext2",
+              "split":49
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

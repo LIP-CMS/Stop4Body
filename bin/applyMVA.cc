@@ -23,6 +23,9 @@
 #include "UserCode/Stop4Body/interface/json.hpp"
 #include "UserCode/Stop4Body/interface/SampleReader.h"
 
+//#include "FWCore/PythonParameterSet/interface/MakeParameterSets.h"
+//#include "FWCore/ParameterSet/interface/ParameterSet.h"
+
 using json = nlohmann::json;
 
 struct FileInfo
@@ -149,11 +152,11 @@ int main(int argc, char** argv)
   reader->AddVariable("LepChg", &LepChg);
   reader->AddVariable("LepEta", &LepEta);
   reader->AddVariable("LepPt", &LepPt);
-  reader->AddVariable("JetHBpt", &JetHBpt);
-  reader->AddVariable("DrJetHBLep",&DrJetHBLep);
-  reader->AddVariable("Njet", &Njet);
   reader->AddVariable("HT", &HT);
   reader->AddVariable("NbLoose", &NbLoose);
+  reader->AddVariable("Njet", &Njet);
+  reader->AddVariable("JetHBpt", &JetHBpt);
+  reader->AddVariable("DrJetHBLep",&DrJetHBLep);
   // SET1
   // SET2
   reader->AddVariable("JetHBCSV",&JetHBCSV);

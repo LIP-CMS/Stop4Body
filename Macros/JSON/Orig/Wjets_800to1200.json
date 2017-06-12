@@ -11,6 +11,7 @@
           "tag":"Wjets_800to1200",
           "xsec": 6.65612,
           "br": 1.0,
+          "filesPerPart":10,
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/WJetsToLNu_HT800to1200",

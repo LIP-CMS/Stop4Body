@@ -1,4 +1,5 @@
 #include <iostream>
+#include <algorithm>
 
 #include <TROOT.h>
 #include <TDirectory.h>
@@ -8,6 +9,15 @@
 #include "UserCode/Stop4Body/interface/json.hpp"
 #include "UserCode/Stop4Body/interface/SampleReader.h"
 
+struct EventID
+{
+  ULong64_t evt;
+  UInt_t run;
+  UInt_t lumi;
+  bool isTrain;
+  bool isTest;
+};
+
 int main(int argc, char** argv)
 {
   std::string jsonFileName = "";
@@ -15,6 +25,8 @@ int main(int argc, char** argv)
   std::string trainOutputDirectory = "";
   std::string testOutputDirectory = "";
   std::string suffix = "";
+  std::string trainTreeDirectory = "";
+  std::string testTreeDirectory = "";
 
   if(argc < 2)
   {
@@ -47,6 +59,12 @@ int main(int argc, char** argv)
 
     if(argument == "--suffix")
       suffix = argv[++i];
+
+    if(argument == "--trainTreeDir")
+      trainTreeDirectory = argv[++i];
+
+    if(argument == "--testTreeDir")
+      testTreeDirectory = argv[++i];
   }
 
   if(jsonFileName == "")
@@ -82,6 +100,64 @@ int main(int argc, char** argv)
     for(auto &sample : process)
     {
       std::cout << "\tProcessing sample: " << sample.tag() << std::endl;
+
+      bool usePredefinedSplitting = false;
+      if(trainTreeDirectory != "" && testTreeDirectory != "")
+        usePredefinedSplitting = true;
+
+      std::vector<EventID> eventInfo;
+      if(usePredefinedSplitting)
+      {
+        std::cout << "Using the predefined splitting as defined in:" << std::endl;
+        std::cout << "  - Train events: " << trainTreeDirectory+"/"+sample.tag()+".root" << std::endl;
+        std::cout << "  - Test events: " << testTreeDirectory+"/"+sample.tag()+".root" << std::endl;
+        TFile trainEventsFile((trainTreeDirectory+"/"+sample.tag()+".root").c_str(), "READ");
+        TFile testEventsFile((testTreeDirectory+"/"+sample.tag()+".root").c_str(), "READ");
+
+        TTree* inTrainTree = static_cast<TTree*>(trainEventsFile.Get("bdttree"));
+        TTree* inTestTree = static_cast<TTree*>(testEventsFile.Get("bdttree"));
+
+        UInt_t Run;
+        ULong64_t Event;
+        UInt_t LumiSec;
+        inTrainTree->SetBranchAddress("Run", &Run);
+        inTrainTree->SetBranchAddress("Event", &Event);
+        inTrainTree->SetBranchAddress("LumiSec", &LumiSec);
+        inTestTree->SetBranchAddress("Run", &Run);
+        inTestTree->SetBranchAddress("Event", &Event);
+        inTestTree->SetBranchAddress("LumiSec", &LumiSec);
+
+        Long64_t nentries = inTrainTree->GetEntries();
+        for(Long64_t i = 0; i < nentries; ++i)
+        {
+          inTrainTree->GetEntry(i);
+
+          EventID tmp;
+          tmp.evt = Event;
+          tmp.run = Run;
+          tmp.lumi = LumiSec;
+          tmp.isTrain = true;
+          tmp.isTest = false;
+
+          eventInfo.push_back(std::move(tmp));
+        }
+
+        nentries = inTestTree->GetEntries();
+        for(Long64_t i = 0; i < nentries; ++i)
+        {
+          inTestTree->GetEntry(i);
+
+          EventID tmp;
+          tmp.evt = Event;
+          tmp.run = Run;
+          tmp.lumi = LumiSec;
+          tmp.isTrain = false;
+          tmp.isTest = true;
+
+          eventInfo.push_back(std::move(tmp));
+        }
+      }
+
       std::string testOutputFile = testOutputDirectory + "/" + sample.tag();
       std::string trainOutputFile = trainOutputDirectory + "/" + sample.tag();
       if(suffix != "")
@@ -112,6 +188,21 @@ int main(int argc, char** argv)
       TTree* inTree = static_cast<TTree*>(finput.Get("bdttree"));
       inTree->SetBranchStatus("*", 1);
 
+      // Event ID variables:
+      UInt_t Run;
+      ULong64_t Event;
+      UInt_t LumiSec;
+      bool isTight;
+      inTree->SetBranchAddress("Run", &Run);
+      inTree->SetBranchAddress("Event", &Event);
+      inTree->SetBranchAddress("LumiSec", &LumiSec);
+      inTree->SetBranchAddress("isTight", &isTight);
+
+      auto EventCompare = [&Run, &Event, &LumiSec](EventID const& event) -> bool
+      {
+        return event.evt == Event && event.run == Run && event.lumi == LumiSec;
+      };
+
       TFile testFile(testOutputFile.c_str(), "RECREATE");
       TTree* testTree = static_cast<TTree*>(inTree->CloneTree(0));
       Float_t testSplitFactor = 2;
@@ -127,14 +218,30 @@ int main(int argc, char** argv)
       cwd->cd();
 
       Long64_t nentries = inTree->GetEntries();
+      Long64_t extraEvt = 0;
       for(Long64_t i = 0; i < nentries; ++i)
       {
         inTree->GetEntry(i);
-        if(i%2 == 0)
-          testTree->Fill();
+
+        auto evtSearch = std::find_if(eventInfo.begin(), eventInfo.end(), EventCompare);
+        if(usePredefinedSplitting && evtSearch != eventInfo.end())
+        {
+          if(evtSearch->isTest)
+            testTree->Fill();
+          else
+            trainTree->Fill();
+        }
         else
-          trainTree->Fill();
+        {
+          if(usePredefinedSplitting && isTight)
+            ++extraEvt;
+          if(Event%2 == 0)
+            testTree->Fill();
+          else
+            trainTree->Fill();
+        }
       }
+      std::cout << "There were " << extraEvt << " extra events" << std::endl;
 
       testFile.cd();
       testTree->Write();

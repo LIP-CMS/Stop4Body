@@ -3,14 +3,14 @@
 . setupJSONs.sh
 . setupPaths.sh
 
-INPUT=${TEST_DIR}
-OUTPUT=${BDT_DIR}
+for DIR in "${NTUPLE_DIR}" "${TEST_DIR}" "${TRAIN_DIR}" ;do
+  echo "Processing directory: ${DIR}"
+  OUTPUT=${DIR}_${CURRENT_BDT}
 
-if [[ -d ${INPUT} ]] ; then
   if [[ ! -d ${OUTPUT} ]] ; then
     mkdir -p ${OUTPUT}
   fi
 
-  applyMVA --json ${JSON_PATH}/allSamples.json --method BDT --inDir ${INPUT}/ --outDir ${OUTPUT}/
-fi
+  applyMVA --json ${JSON_PATH}/allSamples.json --method BDT --inDir ${DIR}/ --outDir ${OUTPUT}/
+done
 

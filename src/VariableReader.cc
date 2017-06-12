@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <algorithm>
 
 using json = nlohmann::json;
 
@@ -30,6 +31,13 @@ VariableInfo::VariableInfo(json jsonInfo)
   bins_ = 20;
   if(jsonInfo.count("bins") != 0)
     bins_ = jsonInfo["bins"];
+
+  legPos_ = "top";
+  if(jsonInfo.count("legPos") != 0)
+  {
+    legPos_ = jsonInfo["legPos"];
+    std::transform(legPos_.begin(), legPos_.end(), legPos_.begin(), ::tolower);
+  }
 }
 
 VariableJsonLoader::VariableJsonLoader(std::string file): inputFile_(file)
@@ -47,6 +55,39 @@ VariableJsonLoader::VariableJsonLoader(std::string file): inputFile_(file)
     {
       VariableInfo thisVariable(var);
       variables_.push_back(thisVariable);
+    }
+    catch(MissingJSONParam& exception)
+    {
+      std::cout << "Incomplete variable found, skipping it." << std::endl;
+      std::cout << "The message was: " << exception.what() << std::endl;
+    }
+  }
+}
+
+TwoDVariableJsonLoader::TwoDVariableJsonLoader(std::string file): inputFile_(file)
+{
+  json jsonFile;
+  std::ifstream inputFile(inputFile_);
+  inputFile >> jsonFile;
+
+  if(jsonFile.count("2Dplots") == 0)
+    throw MissingJSONParam("The JSON file does not contain the '2Dplots' entry. It is not a valid file.");
+
+  for(auto& var : jsonFile["2Dplots"])
+  {
+    try
+    {
+      if(var.count("name") == 0)
+        throw MissingJSONParam("The 2Dplot does not have a name.");
+      std::string name = var["name"];
+
+      if(var.count("X") == 0)
+        throw MissingJSONParam("The 2Dplot '" + name + "' does not have an X variable.");
+      if(var.count("Y") == 0)
+        throw MissingJSONParam("The 2Dplot '" + name + "' does not have a Y variable.");
+
+      TwoDVariableInfo thisPlot(name, var["X"], var["Y"]);
+      variables_.push_back(thisPlot);
     }
     catch(MissingJSONParam& exception)
     {

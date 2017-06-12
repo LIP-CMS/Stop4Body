@@ -16,6 +16,7 @@
   <bin name="makePlots"         file="makePlots.cc"> </bin>
   <bin name="getPUWeight"       file="getPUWeight.cc"> </bin>
   <bin name="getDDEstimate"     file="getDDEstimate.cc"> </bin>
+  <bin name="buildJobs"         file="buildJobs.cc"> </bin>
 </environment>
 
 <Flags CXXFLAGS="-g"/>

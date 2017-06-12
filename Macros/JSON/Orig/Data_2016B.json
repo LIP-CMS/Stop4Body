@@ -13,6 +13,7 @@
           "xsec":1.0,
           "br":1.0,
           "recordedLumi":5788,
+          "filesPerPart":25,
           "paths":[
             {
               "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/MET_Run2016B_03Feb2017_v2",

@@ -1,0 +1,86 @@
+{
+  "cuts":[
+    {
+      "name":"PreselectionMVA_allLep",
+      "expression":"(HT > 200) && (Met > 280) && (nGoodEl+nGoodMu <= 2) && (Jet1Pt > 110)",
+      "latex":"Preselection MVA"
+    },
+    {
+      "name":"PreselectionMVA_lep30",
+      "expression":"(HT > 200) && (Met > 280) && (nGoodEl+nGoodMu <= 2) && (Jet1Pt > 110) && (LepPt < 30)",
+      "latex":"Preselection MVA ($p_T(l) < 30$)"
+    },
+    {
+      "name":"PreselectionMVA_lep30_wjets",
+      "expression":"(HT > 200) && (Met > 280) && (nGoodEl+nGoodMu <= 2) && (Jet1Pt > 110) && (LepPt < 30) && (NbLoose == 0)",
+      "latex":"Preselection MVA ($p_T(l) < 30$)"
+    },
+    {
+      "name":"PreselectionMVA_lep30_ttbar",
+      "expression":"(HT > 200) && (Met > 280) && (nGoodEl+nGoodMu <= 2) && (Jet1Pt > 110) && (LepPt < 30) && (NbTight > 0)",
+      "latex":"Preselection MVA ($p_T(l) < 30$)"
+    }
+  ],
+  "variables":[
+    {
+      "expression":"BDT",
+      "label":"BDT",
+      "legPos":"top",
+      "min":-0.6,
+      "max":0.6,
+      "bins":48
+    }
+  ],
+  "2Dplots":[
+    {
+      "name":"IsoVSBDT",
+      "X":{
+        "expression":"BDT",
+        "min": -0.6,
+        "max": 0.6,
+        "bins": 48
+      },
+      "Y":{
+        "name":"HybIso",
+        "expression":"LepIso03*min(LepPt,25)",
+        "label":"HybIso",
+        "min": 0,
+        "max": 20,
+        "bins": 20
+      }
+    },
+    {
+      "name":"RelIsoVSBDT",
+      "X":{
+        "expression":"BDT",
+        "min": -0.6,
+        "max": 0.6,
+        "bins": 48
+      },
+      "Y":{
+        "name":"RelIso",
+        "expression":"LepIso03",
+        "label":"RelIso",
+        "min": 0,
+        "max": 1,
+        "bins": 20
+      }
+    },
+    {
+      "name":"LepPtVSBDT",
+      "X":{
+        "expression":"BDT",
+        "min": -0.6,
+        "max": 0.6,
+        "bins": 48
+      },
+      "Y":{
+        "expression":"LepPt",
+        "min": 3.5,
+        "max": 38,
+        "bins": 23,
+        "note":"The bins start at 3.5 and have a pitch of 1.5. Chose the number of bins giving a nice number around 40"
+      }
+    }
+  ]
+}

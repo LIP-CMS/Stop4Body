@@ -11,6 +11,7 @@
           "tag":"ZJetsToNuNu_HT100to200",
           "xsec": 1,
           "br": 1.0,
+          "filesPerPart":5,
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/ZJetsToNuNu_HT100to200",
@@ -26,6 +27,7 @@
           "tag":"ZJetsToNuNu_HT200to400",
           "xsec": 96.38,
           "br": 1.0,
+          "filesPerPart":5,
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/ZJetsToNuNu_HT200to400",
@@ -41,6 +43,7 @@
           "tag":"ZJetsToNuNu_HT400to600",
           "xsec": 13.46,
           "br": 1.0,
+          "filesPerPart":5,
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/ZJetsToNuNu_HT400to600",
@@ -56,6 +59,7 @@
           "tag":"ZJetsToNuNu_HT600to800",
           "xsec": 13.46,
           "br": 1.0,
+          "filesPerPart":5,
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/ZJetsToNuNu_HT600to800",
@@ -67,6 +71,7 @@
           "tag":"ZJetsToNuNu_HT800to1200",
           "xsec": 13.46,
           "br": 1.0,
+          "filesPerPart":5,
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/ZJetsToNuNu_HT800t1200",
@@ -78,6 +83,7 @@
           "tag":"ZJetsToNuNu_HT1200to2500",
           "xsec": 13.46,
           "br": 1.0,
+          "filesPerPart":5,
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/ZJetsToNuNu_HT1200to2500",
@@ -93,6 +99,7 @@
           "tag":"ZJetsToNuNu_HT2500toInf",
           "xsec": 5.17,
           "br": 1.0,
+          "filesPerPart":5,
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/ZJetsToNuNu_HT2500toInf",
